@@ -1,6 +1,6 @@
 <script lang="ts" setup="setup">
-  import useSiteConfig from '@/hooks/api/useSiteConfig'
-  import { computed } from 'vue'
+  import useSiteConfig, { useSiteBoxes } from '@/hooks/api/useSiteConfig'
+  import { computed, toRef } from 'vue'
 
   import SearchBox from '@/components/front/SearchBox.vue'
   import Boxes from '@/components/front/Boxes.vue'
@@ -19,6 +19,9 @@
     box_link_hover_color,
     box_back_hover_color,
   } = state
+  // const userID = ref(state.user_id)
+
+  const { boxes } = useSiteBoxes(toRef(state, 'user_id'))
 </script>
 
 <template>
@@ -44,7 +47,7 @@
     <!--    search-->
     <search-box />
     <!--    box-->
-    <boxes />
+    <Boxes :boxes="boxes" />
     <!--    footer-->
     <IFooter />
   </div>

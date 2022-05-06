@@ -65,3 +65,36 @@ export const reqSiteConfig = (prefix = 'ujuji') => {
     method: 'get',
   })
 }
+
+/**
+ * 站点数据
+ */
+
+export interface IBoxesData {
+  id: number
+  title: string
+  item_order: number
+  links: ILink[]
+  icon: string
+  pwd_notice: string
+  pwd: string
+  introduction: string
+}
+
+export interface ILink {
+  id: number
+  icon: string
+  box_id: number
+  link: string
+  title: string
+  item_order: number
+  description: string
+  created_at: string
+}
+
+export const reqSiteBoxes = (id: number) => {
+  return useHttp<BasicResp<IBoxesData[]>>({
+    url: `box/v1/all/links/${id}`,
+    method: 'get',
+  })
+}
