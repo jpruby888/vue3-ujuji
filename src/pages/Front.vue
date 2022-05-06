@@ -1,38 +1,46 @@
 <script lang="ts" setup="setup">
   import useSiteConfig from '@/hooks/api/useSiteConfig'
+  import { computed } from 'vue'
 
-  const { loading, siteConfig, configStore } = useSiteConfig()
-  console.log(loading.value)
-  console.log(siteConfig.value)
-  console.log(configStore.$state)
-
-  import { ElMessage } from 'element-plus'
-
-  const open1 = () => {
-    ElMessage('this is a message.')
-  }
-  const open2 = () => {
-    ElMessage({
-      message: 'Congrats, this is a success message.',
-      type: 'success',
-    })
-  }
-  const open3 = () => {
-    ElMessage({
-      message: 'Warning, this is a warning message.',
-      type: 'warning',
-    })
-  }
-  const open4 = () => {
-    ElMessage.error('Oops, this is a error message.')
-  }
+  const { configStore } = useSiteConfig()
+  const state = configStore.$state
+  const bgImg = computed(() => {
+    return `url('${state.background_image}')`
+  })
 </script>
 
 <template>
-  <el-button :plain="true" @click="open2">success</el-button>
-  <el-button :plain="true" @click="open3">warning</el-button>
-  <el-button :plain="true" @click="open1">message</el-button>
-  <el-button :plain="true" @click="open4">error</el-button>
+  <div class="front h-full text-gray-200">
+    <div class="bg-wrapper h-full bg-cover bg-no-repeat opacity-95 bg-blend-screen" />
+    <!--      header-->
+    <div class="headers flex justify-between">
+      <div class="left">[成都] 多云转阴 29℃</div>
+      <div class="right">
+        <ul class="flex space-x-2">
+          <li><a href="#">新闻</a></li>
+          <li><a href="#">留言</a></li>
+          <li><a href="#">最新</a></li>
+          <li><a href="#">设置</a></li>
+        </ul>
+      </div>
+    </div>
+    <!--      title-->
+    <div class="title text-center">
+      <h3>{{ state.site_name }}</h3>
+      <div class="desc">{{ state.site_desc }}</div>
+    </div>
+  </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+  .bg-wrapper {
+    background-image: v-bind(bgImg);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -10;
+    background-position: center 0;
+  }
+</style>
