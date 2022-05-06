@@ -1,14 +1,16 @@
-import { defineConfig } from 'vite';
-import vue from '@vitejs/plugin-vue';
-import * as path from 'path';
-import Components from 'unplugin-vue-components/vite';
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
-import PurgeIcons from 'vite-plugin-purge-icons';
-import { minifyHtml, injectHtml } from 'vite-plugin-html';
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import * as path from 'path'
+//element 的按需加载
+import AutoImport from 'unplugin-auto-import/vite'
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import PurgeIcons from 'vite-plugin-purge-icons'
+import { minifyHtml, injectHtml } from 'vite-plugin-html'
 // https://vitejs.dev/config/
 const resolve = (p: string) => {
-  return path.resolve(__dirname, p);
-};
+  return path.resolve(__dirname, p)
+}
 export default defineConfig({
   resolve: {
     alias: {
@@ -18,13 +20,16 @@ export default defineConfig({
   },
   plugins: [
     vue(),
+    AutoImport({
+      resolvers: [ElementPlusResolver()],
+    }),
     Components({
       resolvers: [ElementPlusResolver()],
     }),
     minifyHtml(),
     injectHtml({
       data: {
-        title: 'Vite Vue Starter',
+        title: '优聚集',
         injectScript: '',
       },
     }),
@@ -37,4 +42,14 @@ export default defineConfig({
       ],
     }),
   ],
-});
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://api2.ujuji.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+    },
+    cors: true,
+  },
+})

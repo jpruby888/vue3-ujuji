@@ -1,48 +1,38 @@
 <script lang="ts" setup="setup">
-  import useCounter from '@/store/useCounter';
-  import { storeToRefs } from 'pinia';
-  import AppIcon from '@/components/common/AppIcon.vue';
+  import useSiteConfig from '@/hooks/api/useSiteConfig'
 
-  const counter = useCounter();
-  const refCounter = storeToRefs(counter);
+  const { loading, siteConfig, configStore } = useSiteConfig()
+  console.log(loading.value)
+  console.log(siteConfig.value)
+  console.log(configStore.$state)
+
+  import { ElMessage } from 'element-plus'
+
+  const open1 = () => {
+    ElMessage('this is a message.')
+  }
+  const open2 = () => {
+    ElMessage({
+      message: 'Congrats, this is a success message.',
+      type: 'success',
+    })
+  }
+  const open3 = () => {
+    ElMessage({
+      message: 'Warning, this is a warning message.',
+      type: 'warning',
+    })
+  }
+  const open4 = () => {
+    ElMessage.error('Oops, this is a error message.')
+  }
 </script>
 
 <template>
-  <div class="wrapper h-screen w-screen text-center p-10">
-    <div class="front w-96 mx-auto p-5 rounded border border-gray-300">
-      <div class="font-bold text-lg text-gray-700">Front</div>
-    </div>
-
-    <div class="box mt-4 w-96 mx-auto p-5 rounded border border-gray-300">
-      <div class="title font-bold text-left mb-3">Pinia:</div>
-      <p>
-        <el-button size="small" @click="counter.add(1)">+1</el-button>
-        <el-button size="small" @click="counter.add(10)">+10</el-button>
-      </p>
-      <p class="mt-5">
-        <span>{{ refCounter.count }}</span>
-      </p>
-    </div>
-
-    <div class="router mt-4 w-96 mx-auto p-5 rounded border border-gray-300">
-      <div class="title font-bold text-left mb-3">Router:</div>
-      <p>
-        <el-button type="primary" size="small" @click="$router.push({ name: 'Admin' })">
-          To Admin
-        </el-button>
-      </p>
-    </div>
-
-    <div class="iconify mt-4 w-96 mx-auto p-5 rounded border border-gray-300">
-      <div class="title font-bold text-left mb-3">Iconfiy:</div>
-      <p>
-        <app-icon icon="mdi:account-circle" />
-        <app-icon icon="ion:search" class="text-lg" />
-      </p>
-    </div>
-  </div>
-  <!--  <div class="front w-screen h-screen mx-auto">-->
-  <!--  </div>-->
+  <el-button :plain="true" @click="open2">success</el-button>
+  <el-button :plain="true" @click="open3">warning</el-button>
+  <el-button :plain="true" @click="open1">message</el-button>
+  <el-button :plain="true" @click="open4">error</el-button>
 </template>
 
 <style lang="scss" scoped></style>
