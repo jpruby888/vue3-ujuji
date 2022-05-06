@@ -7,7 +7,7 @@ import useSiteSettings from '@/store/hooks/useSiteSettings'
 
 const useSiteConfig = () => {
   const loading = ref(true)
-  const siteConfig = ref<ISite_config>()
+  const siteConfig = ref<Partial<ISite_config>>({})
   const configStore = useSiteSettings()
   reqSiteConfig()
     .then(({ data, msg, code }) => {

@@ -2,15 +2,27 @@
   import useSiteConfig from '@/hooks/api/useSiteConfig'
   import { computed } from 'vue'
 
+  import SearchBox from '@/components/front/SearchBox.vue'
+  import Boxes from '@/components/front/Boxes.vue'
+  import IFooter from '@/components/front/IFooter.vue'
+
   const { configStore } = useSiteConfig()
   const state = configStore.$state
   const bgImg = computed(() => {
     return `url('${state.background_image}')`
   })
+  const {
+    site_name_color,
+    box_background_color,
+    box_title_color,
+    box_link_color,
+    box_link_hover_color,
+    box_back_hover_color,
+  } = state
 </script>
 
 <template>
-  <div class="front h-full text-gray-200">
+  <div class="front h-full">
     <div class="bg-wrapper h-full bg-cover bg-no-repeat opacity-95 bg-blend-screen" />
     <!--      header-->
     <div class="headers flex justify-between">
@@ -25,14 +37,71 @@
       </div>
     </div>
     <!--      title-->
-    <div class="title text-center">
-      <h3>{{ state.site_name }}</h3>
-      <div class="desc">{{ state.site_desc }}</div>
+    <div class="title text-center mt-8">
+      <h3 class="font-bold text-4xl">{{ state.site_name }}</h3>
+      <div class="desc mt-6 text-sm">{{ state.site_desc }}</div>
     </div>
+    <!--    search-->
+    <search-box />
+    <!--    box-->
+    <boxes />
+    <!--    footer-->
+    <IFooter />
   </div>
 </template>
 
 <style lang="scss" scoped>
+  @import '../assets/styles/mixin';
+
+  .box-tips {
+    @apply text-center text-sm;
+    color: var(--box-title-color);
+  }
+
+  .box-item {
+    @apply mt-3 flex flex-wrap items-center h-32 overflow-y-auto space-y-4 text-sm text-center;
+    @include hide-scroll;
+
+    .box-link {
+      @apply w-1/3;
+      color: var(--box-link-color);
+
+      &:hover {
+        color: var(--box-link-hover-color);
+      }
+    }
+  }
+
+  .title {
+    color: var(--site-name-color);
+  }
+
+  .front {
+    --site-name-color: v-bind(site_name_color);
+    --box-background-color: v-bind(box_background_color);
+    --box-title-color: v-bind(box_title_color);
+    --box-link-color: v-bind(box_link_color);
+    --box-link-hover-color: v-bind(box_link_hover_color);
+    --box-back-hover-color: v-bind(box_back_hover_color);
+  }
+
+  .box-title {
+    color: var(--box-title-color);
+  }
+
+  .box {
+    @apply transition-all;
+    background: var(--box-background-color);
+
+    &:hover {
+      background: var(--box-back-hover-color);
+    }
+  }
+
+  .headers {
+    color: var(--site-name-color);
+  }
+
   .bg-wrapper {
     background-image: v-bind(bgImg);
     position: fixed;
