@@ -39,16 +39,23 @@
       <a
         v-for="(item, i) in links"
         :key="i"
-        target="_blank"
-        :href="item.link"
+        href="#"
         class="search-site-item"
+        :class="{ active: linkIndex === i }"
+        @click="linkIndex = i"
       >
         {{ item.name }}
       </a>
     </div>
-    <div class="search-box relative mx-auto mt-5 w-full sm:w-96">
-      <input v-model="q" type="text" class="search-input" />
-      <button class="search-btn">
+    <div v-if="activeLink" class="search-box relative mx-auto mt-5 w-full sm:w-128">
+      <input
+        v-model="q"
+        type="text"
+        class="search-input"
+        :placeholder="activeLink.placeholder"
+        @keyup.enter="handleSearch"
+      />
+      <button class="search-btn" @click="handleSearch">
         <app-icon class="text-2xl" icon="bx:search-alt" />
       </button>
     </div>
@@ -75,7 +82,12 @@
   }
 
   .search-btn {
-    @apply absolute inset-y-0 right-0 w-16 flex justify-center items-center;
-    color: var(--box-background-color);
+    @apply text-gray-400 absolute inset-y-0 right-0 w-16 flex justify-center items-center;
+  }
+
+  .search-site-item {
+    &.active {
+      @apply font-bold;
+    }
   }
 </style>
