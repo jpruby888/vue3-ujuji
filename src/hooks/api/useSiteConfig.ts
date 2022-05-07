@@ -1,15 +1,18 @@
-import type { IBoxesData, ISite_config } from '@/api/siteApi'
+import type { IBoxesData, ISite_config, ISearch_config } from '@/api/siteApi'
 import { reqSiteBoxes, reqSiteConfig } from '@/api/siteApi'
 import type { Ref } from 'vue'
 import { ref, watch } from 'vue'
 import { OK_CODE } from '@/app/keys'
 import { ElMessage } from 'element-plus'
-import useSiteSettings from '@/store/hooks/useSiteSettings'
+import useSiteSettingsStore from '@/store/hooks/useSiteSettingsStore'
+import useSearchConfigStore from '@/store/hooks/useSearchConfigStore'
 
 const useSiteConfig = () => {
   const loading = ref(true)
   const siteConfig = ref<Partial<ISite_config>>({})
-  const configStore = useSiteSettings()
+  const siteSearch = ref<Partial<ISearch_config[]>>([])
+  const configStore = useSiteSettingsStore()
+  const searchStore = useSearchConfigStore()
   reqSiteConfig()
     .then(({ data, msg, code }) => {
       if (code === OK_CODE) {
@@ -19,6 +22,8 @@ const useSiteConfig = () => {
         })
         siteConfig.value = data.site_config
         configStore.load(data.site_config)
+        siteSearch.value = data.search_config
+        searchStore.load(data.search_config)
       }
     })
     .finally(() => {
@@ -28,6 +33,8 @@ const useSiteConfig = () => {
     loading,
     siteConfig,
     configStore,
+    searchStore,
+    siteSearch,
   }
 }
 
