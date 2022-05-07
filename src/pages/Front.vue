@@ -1,10 +1,12 @@
 <script lang="ts" setup="setup">
   import useSiteConfig, { useSiteBoxes } from '@/hooks/api/useSiteConfig'
-  import { computed, toRef } from 'vue'
+  import type { Ref } from 'vue'
+  import { computed, toRefs } from 'vue'
 
   import SearchBox from '@/components/front/SearchBox.vue'
   import Boxes from '@/components/front/Boxes.vue'
   import IFooter from '@/components/front/IFooter.vue'
+  import ITitle from '@/components/front/ITitle.vue'
 
   const { configStore } = useSiteConfig()
   const state = configStore.$state
@@ -18,10 +20,12 @@
     box_link_color,
     box_link_hover_color,
     box_back_hover_color,
-  } = state
+    user_id,
+  } = toRefs(state)
   // const userID = ref(state.user_id)
 
-  const { boxes } = useSiteBoxes(toRef(state, 'user_id'))
+  const { boxes } = useSiteBoxes(user_id as Ref<number | undefined>)
+  // const { boxes } = useSiteBoxes(toRef(state, 'user_id'))
 </script>
 
 <template>
@@ -40,10 +44,7 @@
       </div>
     </div>
     <!--      title-->
-    <div class="title text-center mt-8">
-      <h3 class="font-bold text-4xl">{{ state.site_name }}</h3>
-      <div class="desc mt-6 text-sm">{{ state.site_desc }}</div>
-    </div>
+    <ITitle :state="state" />
     <!--    search-->
     <search-box />
     <!--    box-->

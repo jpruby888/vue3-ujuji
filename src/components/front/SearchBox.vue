@@ -14,7 +14,7 @@
       <a href="#" class="search-site-item">必应</a>
     </div>
     <div class="search-box relative mx-auto mt-5 w-full sm:w-96">
-      <input type="text" class="search-input" />
+      <input type="text" class="search-input" placeholder="请输入关键词搜索" />
       <button class="absolute inset-y-0 right-0 w-16 flex justify-center items-center">
         <app-icon class="text-2xl" icon="bx:search-alt" />
       </button>
