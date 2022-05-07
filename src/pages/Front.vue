@@ -31,7 +31,7 @@
 
 <template>
   <div v-loading="loading || boxLoading" class="front h-full">
-    <div class="bg-wrapper h-full bg-cover bg-no-repeat opacity-95 bg-blend-screen" />
+    <div class="bg-wrapper h-full bg-cover bg-no-repeat bg-blend-screen" />
     <!--      header-->
     <IHeader />
     <!--      title-->

@@ -1,14 +1,12 @@
-import type { ISite_config } from '@/api/siteApi'
-
 const useStorage = () => {
   const setItem = <T>(key: string, val: T) => {
     const sVal = JSON.stringify(val)
     localStorage.setItem(key, sVal)
   }
-  const getItem = (key: string): Partial<ISite_config> | null => {
+  const getItem = <T>(key: string): Partial<T> | null => {
     const item = localStorage.getItem(key)
     if (item) {
-      return JSON.parse(item) as ISite_config
+      return JSON.parse(item) as T
     }
     return null
   }
