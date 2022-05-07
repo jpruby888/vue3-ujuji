@@ -9,7 +9,7 @@
   import ITitle from '@/components/front/ITitle.vue'
   import IHeader from '@/components/front/IHeader.vue'
 
-  const { configStore } = useSiteConfig()
+  const { configStore, loading, searchStore } = useSiteConfig()
   const state = configStore.$state
   const bgImg = computed(() => {
     return `url('${state.background_image}')`
@@ -25,19 +25,19 @@
   } = toRefs(state)
   // const userID = ref(state.user_id)
 
-  const { boxes } = useSiteBoxes(user_id as Ref<number | undefined>)
+  const { boxes, boxLoading } = useSiteBoxes(user_id as Ref<number | undefined>)
   // const { boxes } = useSiteBoxes(toRef(state, 'user_id'))
 </script>
 
 <template>
-  <div class="front h-full">
+  <div v-loading="loading || boxLoading" class="front h-full">
     <div class="bg-wrapper h-full bg-cover bg-no-repeat opacity-95 bg-blend-screen" />
     <!--      header-->
     <IHeader />
     <!--      title-->
     <ITitle :state="state" />
     <!--    search-->
-    <search-box />
+    <search-box :search-store="searchStore" />
     <!--    box-->
     <Boxes :boxes="boxes" />
     <!--    footer-->

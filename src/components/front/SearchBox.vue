@@ -1,10 +1,13 @@
 <script lang="ts" setup="setup">
   import AppIcon from '@/components/common/AppIcon.vue'
-  import useSiteConfig from '@/hooks/api/useSiteConfig'
+  // import useSiteConfig from '@/hooks/api/useSiteConfig'
   import { computed, ref } from 'vue'
   import { jumpUrI } from '@/utils/url'
+  import useSearchConfigStore from '@/store/hooks/useSearchConfigStore'
 
-  const { searchStore } = useSiteConfig()
+  // const { searchStore } = useSiteConfig()
+  const searchStore = useSearchConfigStore()
+
   const state = searchStore.$state
   const index = ref(0)
   const links = computed(() => {

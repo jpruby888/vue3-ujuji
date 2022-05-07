@@ -39,7 +39,7 @@ const useSiteConfig = () => {
 }
 
 export const useSiteBoxes = (userID: Ref<number | undefined>) => {
-  console.log(userID.value)
+  const boxLoading = ref(true)
   const boxes = ref<IBoxesData[]>([])
   watch(userID, async () => {
     console.log('userId', userID.value)
@@ -54,10 +54,13 @@ export const useSiteBoxes = (userID: Ref<number | undefined>) => {
       boxes.value = data
     }
   }
-  refresh().finally() //异步函数要执行
+  refresh().finally(() => {
+    boxLoading.value = false
+  }) //异步函数要执行
   return {
     boxes,
     refresh,
+    boxLoading,
   }
 }
 
