@@ -4,6 +4,9 @@
   import useWeather from '@/hooks/api/useWeather'
   import { storeToRefs } from 'pinia'
   import city from '@/assets/data/city.json'
+  import MsgDialog from '@/components/front/header/MsgDialog.vue'
+  import News from '@/components/front/header/News.vue'
+  import NewLinks from '@/components/front/header/NewLinks.vue'
   useWeather()
   const weatherStore = useWeatherStore()
   const refWeather = storeToRefs(weatherStore)
@@ -55,9 +58,9 @@
     </div>
     <div class="right">
       <ul class="flex space-x-2">
-        <li><a href="#">新闻</a></li>
-        <li><a href="#">留言</a></li>
-        <li><a href="#">最新</a></li>
+        <li><news /></li>
+        <li><msg-dialog /></li>
+        <li><new-links /></li>
         <li><a href="#">设置</a></li>
       </ul>
     </div>

@@ -139,3 +139,35 @@ export const reqWeather = (city: string) => {
     method: 'get',
   })
 }
+
+/**
+ * 请求新闻数据
+ */
+
+export const reqNews = () => {
+  return useHttp<BasicResp<string>>({
+    url: `news/v1`,
+    method: 'get',
+  })
+}
+
+/**
+ * 请求最新的链接
+ */
+export interface INewLinksData {
+  id: number
+  icon: string
+  box_id: number
+  link: string
+  title: string
+  item_order: number
+  description: string
+  created_at: string
+}
+
+export const reqNewLinks = () => {
+  return useHttp<BasicResp<INewLinksData[]>>({
+    url: `/link/v1/latest/1?count=15`,
+    method: `get`,
+  })
+}

@@ -6,3 +6,12 @@ export interface BasicResp<T> {
   data: T
   msg: string
 }
+
+export interface ListResp<T> {
+  code: number
+  data: {
+    total: number
+    list: T[]
+  }
+  msg: string
+}

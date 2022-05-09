@@ -19,7 +19,7 @@
     "@iconify/iconify": "^2.2.1",
     "@iconify/json": "^1.1.421",
     "axios": "^0.27.2",
-    "dayjs": "^1.11.1",
+    "dayjs": "^1.11.2",
     "element-plus": "^2.1.11",
     "lodash-es": "^4.17.21",
     "pinia": "^2.0.13",

@@ -8,11 +8,13 @@ const useVerify = () => {
   const refresh = () => {
     reqVerify().then(({ code, data }) => {
       if (code === OK_CODE) {
-        image.value = data.data.img
-        imageID.value = data.data.id
+        image.value = data.img
+        imageID.value = data.id
       }
     })
   }
+
+  refresh()
 
   return {
     refresh,
