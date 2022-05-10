@@ -6,6 +6,7 @@ import { OK_CODE } from '@/app/keys'
 import { ElMessage } from 'element-plus'
 import useSiteSettingsStore from '@/store/hooks/useSiteSettingsStore'
 import useSearchConfigStore from '@/store/hooks/useSearchConfigStore'
+import useHeadLink from '@/hooks/useHeadLink'
 
 const useSiteConfig = () => {
   const loading = ref(true)
@@ -24,6 +25,7 @@ const useSiteConfig = () => {
         configStore.load(data.site_config)
         siteSearch.value = data.search_config
         searchStore.load(data.search_config)
+        useHeadLink('iconfont', 'link', configStore.$state.icon_url || '')
       }
     })
     .finally(() => {

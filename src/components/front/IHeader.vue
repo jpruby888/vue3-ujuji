@@ -7,6 +7,7 @@
   import MsgDialog from '@/components/front/header/MsgDialog.vue'
   import News from '@/components/front/header/News.vue'
   import NewLinks from '@/components/front/header/NewLinks.vue'
+  import Setting from '@/components/front/header/Setting.vue'
   useWeather()
   const weatherStore = useWeatherStore()
   const refWeather = storeToRefs(weatherStore)
@@ -61,7 +62,7 @@
         <li><news /></li>
         <li><msg-dialog /></li>
         <li><new-links /></li>
-        <li><a href="#">设置</a></li>
+        <li><setting /></li>
       </ul>
     </div>
   </div>

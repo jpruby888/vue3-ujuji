@@ -1,5 +1,6 @@
 import useHttp from '@/api/useHttp'
 import type { BasicResp } from '@/api/types'
+import { isNumber } from 'lodash-es'
 
 /**
  * 查询天气api
@@ -165,9 +166,12 @@ export interface INewLinksData {
   created_at: string
 }
 
-export const reqNewLinks = () => {
+export const reqNewLinks = (userID: number, count = 20) => {
   return useHttp<BasicResp<INewLinksData[]>>({
-    url: `/link/v1/latest/1?count=15`,
+    url: `/link/v1/latest/${userID}?`,
     method: `get`,
+    params: {
+      count,
+    },
   })
 }

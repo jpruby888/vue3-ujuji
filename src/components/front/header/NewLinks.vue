@@ -1,10 +1,16 @@
 <script lang="ts" setup="setup">
-  import { ref } from 'vue'
+  import type { Ref } from 'vue'
+  import { ref, toRef } from 'vue'
   import useNewLinks from '@/hooks/api/useNewLinks'
-  import { formatDate } from '@/utils/date'
+  import { formatDateYMD } from '@/utils/date'
+  import useSiteSettingsStore from '@/store/hooks/useSiteSettingsStore'
+  import AppIcon from '@/components/common/AppIcon.vue'
 
   const visible = ref(false)
-  const { loading, refresh, newLinks } = useNewLinks()
+  const siteSettingsStore = useSiteSettingsStore()
+  const user_id = toRef(siteSettingsStore.$state, 'user_id')
+
+  const { loading, refresh, newLinks } = useNewLinks(user_id as Ref<number>)
 
   const handleOpen = () => {
     refresh()
@@ -12,7 +18,8 @@
 </script>
 
 <template>
-  <a href="#" class="flex items-center" @click.prevent="visible = true">
+  <a href="#" class="flex items-center space-x-0.5" @click.prevent="visible = true">
+    <app-icon class="text-lg" icon="akar-icons:link-on"></app-icon>
     <span>最新</span>
   </a>
   <el-dialog v-model="visible" width="500px" title="最新链接" :modal="false" @open="handleOpen">
@@ -30,7 +37,7 @@
         >
           {{ i + 1 }} 、 {{ item.title }}
         </a>
-        <div>{{ formatDate(item.created_at) }}</div>
+        <div>{{ formatDateYMD(item.created_at) }}</div>
       </li>
     </ul>
   </el-dialog>

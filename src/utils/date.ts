@@ -6,6 +6,10 @@ export const formatDate = (date: string) => {
   return dayjs(date).format('YYYY/MM/DD HH:mm')
 }
 
+export const formatDateYMD = (date: string) => {
+  return dayjs(date).format('YYYY-MM-DD')
+}
+
 export const relativeTime = (date: string) => {
   return dayjs(date).fromNow()
 }

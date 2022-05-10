@@ -1,14 +1,15 @@
 import type { INewLinksData } from '@/api/commonApi'
 import { reqNewLinks } from '@/api/commonApi'
 import { OK_CODE } from '@/app/keys'
+import type { Ref } from 'vue'
 import { ref } from 'vue'
 
-const useNewLinks = () => {
+const useNewLinks = (userId: Ref<number>) => {
   const newLinks = ref<INewLinksData[]>([])
   const loading = ref(false)
   const refresh = () => {
     loading.value = true
-    reqNewLinks()
+    reqNewLinks(userId.value)
       .then(({ code, data }) => {
         if (code === OK_CODE) {
           newLinks.value = data
