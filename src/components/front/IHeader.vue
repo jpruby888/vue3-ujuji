@@ -2,15 +2,14 @@
   import useWeatherStore from '@/store/hooks/useWeatherStore'
   import { computed, ref } from 'vue'
   import useWeather from '@/hooks/api/useWeather'
-  import { storeToRefs } from 'pinia'
   import city from '@/assets/data/city.json'
   import MsgDialog from '@/components/front/header/MsgDialog.vue'
   import News from '@/components/front/header/News.vue'
   import NewLinks from '@/components/front/header/NewLinks.vue'
   import Setting from '@/components/front/header/Setting.vue'
+
   useWeather()
   const weatherStore = useWeatherStore()
-  const refWeather = storeToRefs(weatherStore)
   const cityValue = ref<string[]>([])
   const showPopover = ref(false)
   const info = computed(() => {
@@ -18,6 +17,7 @@
     if (!i) return '' //如果没有查到数据直接返回
     return `[${i?.city}] ${i?.today.condition} ${i?.today.temp} `
   })
+
   const handleChange = (val: string[]) => {
     if (!val.length) return
     weatherStore.changeCity(val[val.length - 1])
@@ -52,7 +52,14 @@
         </template>
         <template #reference>
           <span class="text-xs cursor-pointer" type="text" @click="showPopover = !showPopover">
-            {{ info }}
+            <el-tooltip
+              class="box-item"
+              effect="light"
+              :content="weatherStore.detailWeather"
+              placement="bottom-start"
+            >
+              <span>{{ info }}</span>
+            </el-tooltip>
           </span>
         </template>
       </el-popover>
