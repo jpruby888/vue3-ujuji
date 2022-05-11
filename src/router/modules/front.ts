@@ -17,6 +17,14 @@ const routes: RouteRecordRaw[] = [
     },
     component: () => import('@/pages/Register.vue'),
   },
+  {
+    path: '/RetrievePassword',
+    name: 'RetrievePassword',
+    meta: {
+      auth: false,
+    },
+    component: () => import('@/pages/RetrievePassword.vue'),
+  },
 ]
 
 export default routes

@@ -62,7 +62,9 @@
           <el-button type="text" size="small" @click="$router.push({ name: 'Front' })">
             返回首页
           </el-button>
-          <el-button type="text" size="small">忘记密码</el-button>
+          <el-button type="text" size="small" @click="$router.push({ name: 'RetrievePassword' })">
+            忘记密码
+          </el-button>
         </span>
       </div>
       <el-form
@@ -84,7 +86,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="verify_str">
-          <div class="inline-flex items-center space-x-2">
+          <div class="inline-flex items-center space-x-2 w-full">
             <el-input
               v-model="formData.verify_str"
               placeholder="验证码"
@@ -112,7 +114,7 @@
   .wrapper {
     @apply h-full w-full flex justify-center items-center bg-gray-100;
     .card {
-      @apply rounded-2xl w-full p-4 sm:p-0 sm:w-1/3 sm:p-4 shadow-2xl bg-white;
+      @apply rounded-2xl w-full p-4 sm:p-5  sm:max-w-md shadow-2xl bg-white;
     }
   }
   .el-form-item {
