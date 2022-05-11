@@ -1,32 +1,42 @@
 <script lang="ts" setup="setup">
   import { reactive, ref } from 'vue'
   import useVerify from '@/hooks/api/useVerify'
-  import type { ILoginReqData } from '@/api/userApi'
-  import { reqUserLogin } from '@/api/userApi'
+  import type { IRegisterData } from '@/api/userApi'
+  import { reqUserRegister } from '@/api/userApi'
   import type { FormInstance } from 'element-plus'
   import { ElMessage } from 'element-plus'
-  import useUserStore from '@/store/hooks/useUserStore'
   import { useRouter } from 'vue-router'
   import { AgreeUrl } from '@/core/constant'
+  import { reqEmailVerify } from '@/api/verifyApi'
 
-  const formData = reactive<ILoginReqData>({
+  const formData = reactive<IRegisterData>({
     username: '',
     password: '',
     verify_id: '',
-    verify_str: '',
+    verify_code: '',
+    email: '',
+    email_verify: '',
   })
   const { refresh, image, imageID } = useVerify()
   //input框规则
   const rules = {
     username: [{ required: true, message: '用户名不能为空' }],
     password: [{ required: true, message: '密码不能为空' }],
-    verify_str: [{ required: true, message: '验证码不能为空' }],
+    email: [
+      { required: true, message: '邮箱不能为空' },
+      {
+        type: 'email',
+        message: '请输入正确的邮箱格式',
+        trigger: ['blur', 'change'],
+      },
+    ],
+    verify_code: [{ required: true, message: '验证码不能为空' }],
+    email_verify: [{ required: true, message: '邮箱验证码不能为空' }],
   }
   //提交时自带验证全部
   const ruleFormRef = ref<FormInstance>()
   const router = useRouter()
   //pinia 存储调用
-  const userStore = useUserStore()
   //提交表单
   const handleSubmit = (formEl: FormInstance | undefined) => {
     formEl?.validate().then((ok: boolean) => {
@@ -35,11 +45,10 @@
         ElMessage.error('请先同意协议')
         return
       }
-      reqUserLogin(Object.assign({}, formData, { verify_id: imageID.value }))
-        .then(({ data, msg }) => {
+      reqUserRegister(Object.assign({}, formData, { verify_id: imageID.value }))
+        .then(({ msg }) => {
           ElMessage.success(msg)
-          userStore.load(data)
-          router.push({ name: 'Admin' })
+          router.push({ name: 'Login' })
         })
         .catch((err) => {
           ElMessage.error(err)
@@ -48,16 +57,32 @@
   }
   //协议同意选项,默认同意
   const agree = ref(true)
+
+  //发送邮箱验证
+  const sendEmailVerify = () => {
+    if (!formData.email || !formData.verify_code) {
+      ElMessage.error('请先输入邮箱验证码或邮箱地址')
+      return
+    }
+
+    reqEmailVerify(Object.assign({}, formData, { verify_id: imageID.value }))
+      .then((res) => {
+        ElMessage.success(res.msg)
+      })
+      .catch((err) => {
+        ElMessage.error(err)
+      })
+  }
 </script>
 
 <template>
   <div class="wrapper">
     <div class="card">
       <div class="title flex justify-between items-end border-b border-gray-200 mb-4">
-        <span class="block text-2xl font-bold title">登录</span>
+        <span class="block text-2xl font-bold title">注册</span>
         <span>
-          <el-button type="text" size="small" @click="$router.push({ name: 'Register' })">
-            立即注册
+          <el-button type="text" size="small" @click="$router.push({ name: 'Login' })">
+            立即登录
           </el-button>
           <el-button type="text" size="small" @click="$router.push({ name: 'Front' })">
             返回首页
@@ -69,7 +94,7 @@
         ref="ruleFormRef"
         :rules="rules"
         :model="formData"
-        label-width="80px"
+        label-width="100px"
         @submit.prevent="handleSubmit(ruleFormRef)"
       >
         <el-form-item label="用户名" prop="username">
@@ -83,15 +108,24 @@
             show-password
           ></el-input>
         </el-form-item>
-        <el-form-item label="验证码" prop="verify_str">
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model="formData.email" placeholder="请输入邮箱地址"></el-input>
+        </el-form-item>
+        <el-form-item label="验证码" prop="verify_code">
           <div class="inline-flex items-center space-x-2">
             <el-input
-              v-model="formData.verify_str"
+              v-model="formData.verify_code"
               placeholder="验证码"
               type="password"
               show-password
             ></el-input>
             <img :src="image" alt="验证码" class="rounded cursor-pointer w-20" @click="refresh" />
+          </div>
+        </el-form-item>
+        <el-form-item label="邮箱验证码" prop="email_verify">
+          <div class="inline-flex items-center space-x-2">
+            <el-input v-model="formData.email_verify" placeholder="请输入邮箱内的验证码"></el-input>
+            <el-button @click="sendEmailVerify">发送</el-button>
           </div>
         </el-form-item>
         <el-form-item label="协议">
@@ -102,7 +136,7 @@
             </a>
           </div>
         </el-form-item>
-        <el-button native-type="submit" type="primary" class="w-full">登录</el-button>
+        <el-button native-type="submit" type="primary" class="w-full">注册</el-button>
       </el-form>
     </div>
   </div>
@@ -115,6 +149,7 @@
       @apply rounded-2xl w-full p-4 sm:p-0 sm:w-1/3 sm:p-4 shadow-2xl bg-white;
     }
   }
+
   .el-form-item {
     @apply items-center;
   }

@@ -36,5 +36,27 @@ const reqUserLogin = (data: ILoginReqData) => {
     },
   })
 }
+/**
+ * 用户注册接口
+ */
+
+export interface IRegisterData {
+  verify_id: string
+  verify_code: string
+  username: string
+  email: string
+  email_verify: string
+  password: string
+}
+
+export const reqUserRegister = (params: IRegisterData) => {
+  return useHttp<BasicResp<null>>({
+    url: `/user/v1`,
+    method: 'post',
+    data: {
+      ...params,
+    },
+  })
+}
 
 export { reqUserLogin }
