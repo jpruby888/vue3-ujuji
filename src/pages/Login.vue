@@ -41,7 +41,6 @@
 </script>
 
 <template>
-  <div><button @click="router.push({ name: 'Admin' })">测试路由</button></div>
   <div class="wrapper">
     <div class="card">
       <div class="title">

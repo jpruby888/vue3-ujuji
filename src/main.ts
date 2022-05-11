@@ -5,10 +5,12 @@ import router from '@/router'
 import { createPinia } from 'pinia'
 import 'element-plus/dist/index.css'
 //iconify
-import '@purge-icons/generated' // <-- This
+import '@purge-icons/generated'
+import { initUserStore } from '@/store/hooks/useUserStore' // <-- This
 
 //pinia
 const pinia = createPinia()
 const app = createApp(App)
 app.use(router).use(pinia)
 app.mount('#app')
+initUserStore()

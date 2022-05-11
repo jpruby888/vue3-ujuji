@@ -2,7 +2,8 @@ import { defineStore } from 'pinia'
 import useStorage from '@/hooks/useStorage'
 import type { ILoginResData } from '@/api/userApi'
 
-const useUserStore = defineStore('userStore', {
+export const USER_KEY = 'userStore'
+const useUserStore = defineStore(USER_KEY, {
   state: (): Partial<ILoginResData> => {
     return {
       info: {
@@ -24,14 +25,16 @@ const useUserStore = defineStore('userStore', {
   },
 })
 
-const instance = useUserStore()
-const { setItem, getItem } = useStorage()
-instance.$subscribe((mutation, state) => {
-  setItem(instance.$id, { ...state })
-})
+export const initUserStore = () => {
+  const instance = useUserStore()
+  const { setItem, getItem } = useStorage()
+  instance.$subscribe((mutation, state) => {
+    setItem(instance.$id, { ...state })
+  })
 
-const init = getItem<Partial<ILoginResData>>(instance.$id)
+  const init = getItem<Partial<ILoginResData>>(instance.$id)
 
-instance.$patch({ ...init })
+  instance.$patch({ ...init })
+}
 
 export default useUserStore
