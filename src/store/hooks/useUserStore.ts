@@ -3,6 +3,7 @@ import useStorage from '@/hooks/useStorage'
 import type { ILoginResData } from '@/api/userApi'
 
 export const USER_KEY = 'userStore'
+const { delItem } = useStorage()
 const useUserStore = defineStore(USER_KEY, {
   state: (): Partial<ILoginResData> => {
     return {
@@ -21,6 +22,10 @@ const useUserStore = defineStore(USER_KEY, {
   actions: {
     load(data: Partial<ILoginResData>) {
       this.$patch({ ...this.$state, ...data })
+    },
+    logout() {
+      delItem(USER_KEY) //清空localstorage
+      this.$reset() //清空store
     },
   },
 })

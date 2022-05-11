@@ -19,7 +19,7 @@ request.interceptors.request.use((config) => {
   return config
 })
 
-//相应拦截器
+//响应拦截器
 request.interceptors.response.use(
   (resp) => {
     const { code, msg } = resp.data || {}
