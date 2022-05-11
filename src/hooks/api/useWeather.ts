@@ -13,7 +13,6 @@ const useWeather = () => {
     (city) => {
       if (!city) return
       reqWeather(city).then((res) => {
-        console.log(`请求到的天气数据${res.data}`)
         rawData.value = res.data
         weather.value = JSON.parse(res.data)
       })
