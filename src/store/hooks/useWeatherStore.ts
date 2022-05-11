@@ -35,9 +35,12 @@ instance.$subscribe((mutation, state) => {
 })
 
 const init = getItem<Partial<IWeatherStoreType>>(instance.$id)
-instance.$patch({
-  city: init?.city,
-  data: init?.data,
-})
+//这个值必须判断一下如果有值则打补丁，否则会异常报错
+if (init) {
+  instance.$patch({
+    city: init?.city,
+    data: init?.data,
+  })
+}
 
 export default useWeatherStore

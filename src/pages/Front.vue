@@ -8,6 +8,7 @@
   import IFooter from '@/components/front/IFooter.vue'
   import ITitle from '@/components/front/ITitle.vue'
   import IHeader from '@/components/front/IHeader.vue'
+  import { useRouter } from 'vue-router'
 
   const { configStore, loading, searchStore } = useSiteConfig()
   const state = configStore.$state
