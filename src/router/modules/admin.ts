@@ -19,6 +19,14 @@ const routes: AppRouteRaw[] = [
         },
         component: () => import('@/pages/admin/DashBoard.vue'),
       },
+      {
+        path: 'siteConfig',
+        name: 'SiteConfig',
+        meta: {
+          auth: true,
+        },
+        component: () => import('@/pages/admin/SiteConfig.vue'),
+      },
     ],
   },
 ]

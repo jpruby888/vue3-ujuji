@@ -4,7 +4,7 @@
   import { useRouter } from 'vue-router'
   import useUserStore from '@/store/hooks/useUserStore'
   import { ArrowDown } from '@element-plus/icons-vue'
-  import asideMenu from '@/router/asideMenu'
+  import useMenus from '@/router/asideMenu'
 
   const isCollapse = ref(false)
   //退出登录
@@ -24,6 +24,7 @@
     }
   }
   //侧边栏
+  const { asideMenu, activeIndex } = useMenus()
 </script>
 
 <template>
@@ -45,7 +46,7 @@
         <el-dropdown size="large" placement="bottom-start" @command="handleCommand">
           <span class="el-dropdown-link">
             <div class="avatar flex items-center justify-center">
-              <el-avatar shape="circle" :size="35" fit="cover" :src="userStore.info.avatar" />
+              <el-avatar shape="circle" :size="26" fit="cover" :src="userStore.info.avatar" />
               <span class="ml-2 space-x-0.5">
                 {{ userStore.info.username }}:
                 {{ 'user' === userStore.info.role ? '普通用户' : '管理员' }}
@@ -66,13 +67,31 @@
     </div>
     <div class="main-ctn">
       <div class="lef-ctn" :class="{ fold: isCollapse }">
+        <div class="mobile-ctrl">
+          <span>优聚集</span>
+          <div class="flex items-center" @click="isCollapse = !isCollapse">
+            <app-icon icon="ep:close-bold" class="text-lg"></app-icon>
+          </div>
+        </div>
         <ul class="menu">
-          <li v-for="(item, i) in asideMenu" :key="i" class="menu-item">
+          <li
+            v-for="(item, i) in asideMenu"
+            :key="i"
+            class="menu-item"
+            :class="{ active: i === activeIndex }"
+          >
             <router-link :to="{ name: item.routerName }">
               <app-icon :icon="item.icon" class="text-base" />
               <span>{{ item.name }}</span>
             </router-link>
           </li>
+
+          <!--          <li v-for="(item, i) in 10" :key="i" class="menu-item">-->
+          <!--            <router-link :to="{ name: 'DashBoard' }">-->
+          <!--              <app-icon icon="icon-park-outline:config" class="text-base" />-->
+          <!--              <span>你好中国</span>-->
+          <!--            </router-link>-->
+          <!--          </li>-->
         </ul>
       </div>
       <div class="right-ctn">
@@ -83,14 +102,17 @@
 </template>
 
 <style lang="scss" scoped>
+  @import '../assets/styles/mixin.scss';
   $header-height: 4rem;
-  $left-width: 13rem;
+  //$left-width: 13rem;
   .admin {
     @apply h-full w-full;
   }
+
   .header {
-    @apply flex items-center justify-between px-2 border-b border-gray-300 shadow-md;
+    @apply flex items-center justify-between px-2 border-b border-gray-300;
     height: $header-height;
+
     .header-left {
       @apply flex;
       .brand {
@@ -100,30 +122,59 @@
         }
       }
     }
+
     .header-right {
     }
   }
+
   .main-ctn {
     @apply flex;
     height: calc(100% - #{$header-height});
 
     .lef-ctn {
-      @apply bg-green-300 h-full transition-all;
-      width: $left-width;
+      @apply fixed inset-0 w-3/4 shadow-md  bg-white transition-all;
+      @apply sm:transition-all sm:relative sm:w-adminLeftWidth;
+      //&:not(.fold) {
+      //  @apply w-0;
+      //}
       &.fold {
         @apply w-0 transition-all;
+        & > .menu {
+          @apply w-0 transition-all;
+        }
+
+        & > .mobile-ctrl {
+          @apply w-0 transition-all opacity-0;
+        }
+      }
+      .mobile-ctrl {
+        @apply h-10 border-b border-gray-300 flex items-center justify-between items-center px-2 sm:hidden;
+        span {
+          &:first-child {
+            @apply font-bold text-lg;
+          }
+        }
       }
       .menu {
+        @apply flex-1 h-full w-full border-r border-gray-300;
+        @include scroll();
         .menu-item {
-          @apply px-1 py-4 text-base text-center bg-purple-600 h-full;
+          @apply text-base;
+          &.active {
+            a {
+              @apply bg-purple-600 text-gray-100;
+            }
+          }
+
           a {
-            @apply inline-flex items-center justify-center space-x-2;
+            @apply hover:bg-indigo-300 text-gray-600 transition-all block w-full py-2  inline-flex  justify-center space-x-2;
           }
         }
       }
     }
+
     .right-ctn {
-      @apply bg-indigo-300 h-full flex-1;
+      @apply h-full flex-1 p-1.5;
       //width: calc(100% - #{$left-width});
     }
   }
